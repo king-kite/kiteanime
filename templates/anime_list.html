@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} List Of Anime {% endblock %}
+
+{% block head1 %} List Of Animes {% endblock %}
+
+{% block body%}
+
+    {% for anime in object_list|dictsort:"name" %}
+        <li><a href="{% url 'animeview' anime.pk %}">{{ anime.name }}</a></li>
+    {% endfor %}
+
+{% endblock %}
+
+{% block head2 %} Ongoing Series {% endblock %}
+
+{% block content %}
+    {% for anime in object_list|dictsort:"name" %}
+        <li><a href="{% url 'animeview' anime.pk %}">{{ anime.name }}</a></li>
+    {% endfor %}
+{% endblock %}

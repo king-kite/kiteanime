@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+
+{% block title %} Watch/Download {% endblock %}
+
+{% block head1 %} {{ video_list.title }} {% endblock %}
+
+{% block body %}
+    
+    <div class="embed-responsive embed-responsive-16by9">
+        {% if video_list.video %}
+            <video class="player" autoplay controls preload="auto" poster="{{ video_list.foreign.cover.url }}">
+                <source src="{{ video_list.video.url }}" type="video/mp4">
+            </video>
+        {% elif  video_list.embedvideo %}
+            {% video video_list.video as my_video %}
+                URL: {{ my_video.url }}
+                Thumbnail: {{ my_video.thumbnail }}
+                Backend: {{ my_video.backend }}
+                {% video my_video 'large' %}
+            {% endvideo %}
+        {% else %}
+            <h4>Sorry, this video is currently unavailable.</h4>
+        {% endif %}
+    </div>
+    <div>
+        
+    {% if previous %}
+        <a href="{% url 'watch_and_download' previous.pk %}"><p class="text-left">Previous Episode</p></a>
+    {% endif %}
+
+    {% if next %}
+        <a href="{% url 'watch_and_download' next.pk %}"><p class="text-right">Next Episode</p></a>
+    {% endif %}
+    
+    </div>
+    
+    {% for anime in qs reversed %}
+        <li><a href="{% url 'watch_and_download' anime.pk %}">{{ anime.title }}</a></li>
+    {% endfor %}
+
+{% endblock %}
+
+{% block head2 %} Ongoing Series {% endblock %}
+
+{% block content %}
+    {% for anime in ongoing_list|dictsort:"name" %}
+        {% if anime.ongoing is True %}
+            <li><a href="{% url 'view' anime.pk %}">{{ anime.name }}</a></li>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

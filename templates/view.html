@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} Anime View {% endblock %}
+
+{% block head1 %}
+            {{ view_name.name }}
+{% endblock %}
+
+{% block body %}    
+    <ul>
+        {% for anime in page_obj|dictsort:"id" %}
+            <li>
+                <a href="{% url 'watch_and_download' anime.pk %}" class='btn btn-link btn-lg' target='_blank'>{{ anime.title }}</a><br>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number  }} of {{ page_obj.paginator.num_pages  }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number}}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages}}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock %}
+
+{% block head2 %} Ongoing Series {% endblock %}
+
+{% block content %}
+    {% for anime in ongoing_list|dictsort:"name" %}
+        {% if anime.ongoing is True %}
+            <li><a href="{% url 'view' anime.pk %}">{{ anime.name }}</a></li>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

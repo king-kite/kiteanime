@@ -1,0 +1,465 @@
+{% load static %}
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>{% block title %} {% endblock %}</title>
+<meta name="keywords" content="" />
+<meta name="Premium Series" content="" />
+<link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<!-- start header -->
+<div id="header">
+	<div id="logo">
+		<h1><a href="{% url 'home' %}"><span>kite-movies.com</span></a></h1>
+		<p>Brought to you by Mr. KiTe</p>
+	</div>
+	<div id="splash"><img src='{% static "images/img02.gif" %}' alt="" />&nbsp;</div>
+	<div id="menu">
+		<ul id="main">
+			<li class="current_page_item"><a href="{% url 'home' %}">Homepage</a></li>
+			<li><a href="{% url 'anime_list' %}">Anime</a></li>
+			<li><a href="#">Services</a></li>
+			<li><a href="#">About Us</a></li>
+			<li><a href="#">Contact Us</a></li>
+		</ul>
+		<ul id="feed">
+			<li><a href="#">Entries RSS</a></li>
+			<li><a href="#">Comments RSS</a></li>
+		</ul>
+	</div>
+	
+</div>
+<!-- end header -->
+<div id="wrapper">
+	<!-- start page -->
+	<div id="page">
+		<div id="sidebar1" class="sidebar">
+			<ul>
+				<li>
+					<h2>Recent Posts</h2>
+					
+					<ul>
+						{% for animeupload in object_list %}
+						<li>{{ animeupload.videos.title }}</li>
+						
+						{% endfor %}
+					</ul>
+					
+				</li>
+				<li>
+					<h2>Archives</h2>
+					<ul>
+						<li><a href="#">September</a> (23)</li>
+						<li><a href="#">August</a> (31)</li>
+						<li><a href="#">July</a> (31)</li>
+						<li><a href="#">June</a> (30)</li>
+						<li><a href="#">May</a> (31)</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!-- start content -->
+		<div id="content">
+			<div class="flower">
+			<div class="post">
+			{% block body %} {% endblock %}
+		</div>
+		<div class="post">
+			
+			</div>
+		
+		
+			</div>
+		</div>
+	
+		<!-- end content -->
+		<!-- start sidebars -->
+		<div id="sidebar2" class="sidebar">
+			<ul>
+				<li>
+					<form id="searchform" method="get" action="{% url 'search' %}">
+						<div>
+							<h2>Site Search</h2>
+							<input type="text" name="q" id="q" size="15" placeholder="Search...Eg. Naruto" />
+						</div>
+					</form>
+				</li>
+				</li>
+				<li>
+					<h2>Categories</h2>
+					<ul>
+						<li><a href="#">Aliquam libero</a></li>
+						<li><a href="#">Consectetuer adipiscing elit</a></li>
+						<li><a href="#">Metus aliquam pellentesque</a></li>
+						<li><a href="#">Suspendisse iaculis mauris</a></li>
+						<li><a href="#">Urnanet non molestie semper</a></li>
+						<li><a href="#">Proin gravida orci porttitor</a></li>
+						<li><a href="#">Aliquam libero</a></li>
+						<li><a href="#">Consectetuer adipiscing elit</a></li>
+						<li><a href="#">Metus aliquam pellentesque</a></li>
+						<li><a href="#">Urnanet non molestie semper</a></li>
+						<li><a href="#">Proin gravida orci porttitor</a></li>
+						<li><a href="#">Aliquam libero</a></li>
+						<li><a href="#">Consectetuer adipiscing elit</a></li>
+						<li><a href="#">Metus aliquam pellentesque</a></li>
+						<li><a href="#">Suspendisse iaculis mauris</a></li>
+						<li><a href="#">Urnanet non molestie semper</a></li>
+						<li><a href="#">Proin gravida orci porttitor</a></li>
+						<li><a href="#">Metus aliquam pellentesque</a></li>
+						<li><a href="#">Suspendisse iaculis mauris</a></li>
+						<li><a href="#">Urnanet non molestie semper</a></li>
+						<li><a href="#">Proin gravida orci porttitor</a></li>
+						<li><a href="#">Metus aliquam pellentesque</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!-- end sidebars -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end page -->
+</div>
+<div id="footer">
+	<p class="copyright">&copy;&nbsp;&nbsp;2009 All Rights Reserved &nbsp;&bull;&nbsp; Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+	<p class="link"><a href="#">Privacy Policy</a>&nbsp;&#8226;&nbsp;<a href="#">Terms of Use</a></p>
+</div>
+<div align=center>This template  downloaded form <a href='http://all-free-download.com/free-website-templates/'>free website templates</a></div>
+</body>
+</html>
+__________________________________________________________________________________________________________________________
+
+
+{% extends 'base.html' %}
+
+{% block title%} Home {% endblock %}
+
+{% block body %}
+
+
+        
+        {% for anime in object_list %}
+        <table  border="1" width="100%" height="1%">
+            <tr>
+                <td width="111" rowspan="3">
+                    {% if anime.cover %} 
+                        <img src="{{ anime.cover.url }}" alt="{{ anime.title }}" style="width:100%; height:160px">
+                    {% else %}
+                        <span class="text-muted">No Cover</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'animeview' anime.pk %}">{{ anime.name }}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ anime.description }}</td>
+            </tr>
+            <tr>
+                {% if request.user.get_username %}
+                    <td><p>Posted by {{ user.get_username }} On {{ anime.date }}</td>
+                {% endif %}
+            </tr>
+            <br>
+        </table>
+        {% endfor %}
+        
+        
+    
+
+{% endblock %}
+__________________________________________________________________________________________________________________________
+if request.user.is_authenticated():
+            username = request.user.get_username()
+		return username
+		
+		__________________________________________________________________________________________________________________________
+
+
+
+		{% load static %}
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<title>Kite-Anime</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+		<script type="text/javascript" src="{% static 'jquery/jquery-1.4.2.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'jquery/jquery-func.js' %}"></script>
+		<!--[if IE 6]><link rel="stylesheet" href="css/ie6.css" type="text/css" media="all" /><![endif]-->
+		</head>
+		<body>
+		<!-- START PAGE SOURCE -->
+		<div id="shell">
+		  <div id="header">
+			<h1 id="logo"><a href="#">MovieHunter</a></h1>
+			<div class="social"> <span>FOLLOW US ON:</span>
+			  <ul>
+				<li><a class="twitter" href="#">twitter</a></li>
+				<li><a class="facebook" href="#">facebook</a></li>
+				<li><a class="vimeo" href="#">vimeo</a></li>
+				<li><a class="rss" href="#">rss</a></li>
+			  </ul>
+			</div>
+			<div id="navigation">
+			  <ul>
+				<li><a class="active" href="#">HOME</a></li>
+				<li><a href="#">NEWS</a></li>
+				<li><a href="#">IN THEATERS</a></li>
+				<li><a href="#">COMING SOON</a></li>
+				<li><a href="#">CONTACT</a></li>
+				<li><a href="#">ADVERTISE</a></li>
+			  </ul>
+			</div>
+			<div id="sub-navigation">
+			  <ul>
+				<li><a href="#">SHOW ALL</a></li>
+				<li><a href="#">LATEST TRAILERS</a></li>
+				<li><a href="#">TOP RATED</a></li>
+				<li><a href="#">MOST COMMENTED</a></li>
+			  </ul>
+			  <div id="search">
+				<form action="#" method="get" accept-charset="utf-8">
+				  <label for="search-field">SEARCH</label>
+				  <input type="text" name="search field" value="Enter search here" id="search-field" class="blink search-field"  />
+				  <input type="submit" value="GO!" class="search-button" />
+				</form>
+			  </div>
+			</div>
+		  </div>
+		  <div id="main">
+			<div id="content">
+			  <div class="box">
+				<div class="head">
+				  <h2>LATEST TRAILERS</h2>
+				  <p class="text-right"><a href="#">See all</a></p>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">X-MAN</span></span> <a href="#"><img src="{% static 'images/movie1.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">SPIDER MAN 2</span></span> <a href="#"><img src="{% static 'images/movie2.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">SPIDER MAN 3</span></span> <a href="#"><img src="{% static 'images/movie3.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">VALKYRIE</span></span> <a href="#"><img src="{% static 'images/movie4.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">GLADIATOR</span></span> <a href="#"><img src="{% static 'images/movie5.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie last">
+				  <div class="movie-image"> <span class="play"><span class="name">ICE AGE</span></span> <a href="#"><img src="{% static 'images/movie6.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="cl">&nbsp;</div>
+			  </div>
+			  <div class="box">
+				<div class="head">
+				  <h2>TOP RATED</h2>
+				  <p class="text-right"><a href="#">See all</a></p>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">TRANSFORMERS</span></span> <a href="#"><img src="{% static 'images/movie7.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">MAGNETO</span></span> <a href="#"><img src="{% static 'images/movie8.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">KUNG FU PANDA</span></span> <a href="#"><img src="{% static 'images/movie9.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">EAGLE EYE</span></span> <a href="#"><img src="{% static 'images/movie10.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">NARNIA</span></span> <a href="#"><img src="{% static 'images/movie11.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie last">
+				  <div class="movie-image"> <span class="play"><span class="name">ANGELS &amp; DEMONS</span></span> <a href="#"><img src="{% static 'images/movie12.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="cl">&nbsp;</div>
+			  </div>
+			  <div class="box">
+				<div class="head">
+				  <h2>MOST COMMENTED</h2>
+				  <p class="text-right"><a href="#">See all</a></p>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">HOUSE</span></span> <a href="#"><img src="{% static 'images/movie13.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">VACANCY</span></span> <a href="#"><img src="{% static 'images/movie14.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">MIRRORS</span></span> <a href="#"><img src="{% static 'images/movie15.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">THE KINGDOM</span></span> <a href="#"><img src="{% static 'images/movie16.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie">
+				  <div class="movie-image"> <span class="play"><span class="name">MOTIVES</span></span> <a href="#"><img src="{% static 'images/movie17.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="movie last">
+				  <div class="movie-image"> <span class="play"><span class="name">THE PRESTIGE</span></span> <a href="#"><img src="{% static 'images/movie18.jpg' %}" alt="" /></a> </div>
+				  <div class="rating">
+					<p>RATING</p>
+					<div class="stars">
+					  <div class="stars-in"> </div>
+					</div>
+					<span class="comments">12</span> </div>
+				</div>
+				<div class="cl">&nbsp;</div>
+			  </div>
+			</div>
+			<div id="news">
+			  <div class="head">
+				<h3>NEWS</h3>
+				<p class="text-right"><a href="#">See all</a></p>
+			  </div>
+			  <div class="content">
+				<p class="date">12.04.09</p>
+				<h4>Disney's A Christmas Carol</h4>
+				<p>&quot;Disney's A Christmas Carol,&quot; a multi-sensory thrill ride re-envisioned by Academy Award&reg;-winning filmmaker Robert Zemeckis, captures... </p>
+				<a href="#">Read more</a> </div>
+			  <div class="content">
+				<p class="date">11.04.09</p>
+				<h4>Where the Wild Things Are</h4>
+				<p>Innovative director Spike Jonze collaborates with celebrated author Maurice Sendak to bring one of the most beloved books of all time to the big screen in &quot;Where the Wild Things Are,&quot;...</p>
+				<a href="#">Read more</a> </div>
+			  <div class="content">
+				<p class="date">10.04.09</p>
+				<h4>The Box</h4>
+				<p>Norma and Arthur Lewis are a suburban couple with a young child who receive an anonymous gift bearing fatal and irrevocable consequences.</p>
+				<a href="#">Read more</a> </div>
+			</div>
+			<div id="coming">
+			  <div class="head">
+				<h3>COMING SOON<strong>!</strong></h3>
+				<p class="text-right"><a href="#">See all</a></p>
+			  </div>
+			  <div class="content">
+				<h4>The Princess and the Frog </h4>
+				<a href="#"><img src="{% static 'images/coming-soon1.jpg' %}" alt="" /></a>
+				<p>Walt Disney Animation Studios presents the musical &quot;The Princess and the Frog,&quot; an animated comedy set in the great city of New Orleans...</p>
+				<a href="#">Read more</a> </div>
+			  <div class="cl">&nbsp;</div>
+			  <div class="content">
+				<h4>The Princess and the Frog </h4>
+				<a href="#"><img src="{% static 'images/coming-soon2.jpg' %}" alt="" /></a>
+				<p>Walt Disney Animation Studios presents the musical &quot;The Princess and the Frog,&quot; an animated comedy set in the great city of New Orleans...</p>
+				<a href="#">Read more</a> </div>
+			</div>
+			<div class="cl">&nbsp;</div>
+		  </div>
+		  <div id="footer">
+			<p class="lf">Copyright &copy; 2010 <a href="#">Kite-Anime</a> - All Rights Reserved</p>
+			<p class="rf">Design by <a href="http://chocotemplates.com/">ChocoTemplates.com</a></p>
+			<div style="clear:both;"></div>
+		  </div>
+		</div>
+		<!-- END PAGE SOURCE -->
+		</body>
+		</html>

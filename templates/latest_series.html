@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+
+{% block title %} Kite-Anime - Latest Series {% endblock %}
+
+{% block body %}
+    
+    <div id="coming">
+      <div class="head">
+      <h3>ANIME LIST (A-Z)</h3>
+      </div>
+      
+      <div class="row">
+        <div class="column">
+          {% for anime in latest_series %}
+            <li>
+                  <p>
+                    {% if anime.video %}
+                      <a href="#" class='btn btn-link btn-lg' >{{ anime.name }}</a>
+                    {% elif anime.embedvideo %}
+                      <a href="#" class='btn btn-link btn-lg' >{{ anime.name }}</a>
+                    {% else %}
+                      <a href="#" class='btn btn-link btn-lg' >{{ anime.name }}</a>
+                    {% endif %}
+                  </p>
+            </li>
+            {% endfor %}
+        </div>
+
+        <div class="column">
+          <p>nonsense</p>
+        </div>
+
+        <div class="column">
+          <p>nonsense nonsense</p>
+        </div>
+
+        <div class="column">
+          <p>nonsense nonsense nonsense</p>
+        </div>
+      </div>
+
+      <div id="content">
+        <h1>New Comment</h1>
+        <form method="POST" class="post-form">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="save btn btn-default">Send</button>
+        </form>
+        <hr>
+        {% for comment in UploadAnime.comments.all %}
+          <div class="comment">
+            <div class="date">{{ comment.created_date }}</div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text|linebreaks }}</p>
+          </div>
+        {% empty %}
+          <p>No comments here yet.</p>
+        {% endfor %}
+      </div>
+
+      
+      <div>
+      {% for comment in approved_comment %}
+        <div class="comment">
+          <p class="info">
+            Comment {{ forloop.counter }} by {{ comment.author }}
+            {{ comment.created_date }}
+          </p>
+          {{ comment.text|linebreaks }}
+        </div>
+      {% empty %}
+        <p>Tere are no comments yet. </p>
+      {% endfor %}
+
+      {% if new_comment %}
+        <h2>Your comment has been added. </h2>
+      {% else %}
+        <h2>Add a new comment</h2>
+        <form action="{% url 'latest_series' %}" method="post">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <p><input type="submit" value="Add comment"</p>
+        </form>
+      {% endif %}
+      </div>
+
+      <div class="container">
+        <h1>Comments</h1>
+        {{ comment_form }}
+      </div>
+    </div>
+  
+
+    
+    
+{% endblock %}
